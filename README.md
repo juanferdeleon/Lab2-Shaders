@@ -1,10 +1,10 @@
-# SR5: Textures
+# Lab2: Shaders
 
-Cargar modelos 3D y cubrirlos con una textura. Dicha textura cambia su intensidad en base a una fuente de luz.
+Crear shaders interesantes utilizando los parámetros que tienen ya a su disposición.
 
 ## Como ejecutar el codigo
 
-Descargue el repositorio [SR5: Textures](https://github.com/juanferdeleon/SR5-Textures)
+Descargue el repositorio [Lab2: Shaders](https://github.com/juanferdeleon/Lab2-Shaders)
 
 Luego ejecute el archivo [Engine3D.py](/Engine3D.py) dentro de cualquier IDE.
 
