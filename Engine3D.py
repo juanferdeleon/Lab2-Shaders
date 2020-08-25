@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     bmp.lookAt(V3(-0.2,0,5),V3(0,0,0),norm(V3(0,1,0)))
     bmp.loadViewportMatrix(0, 0)
-    bmp.glLoadObjModel("sphere3.obj", translate=(-1.0,-0.9,0), scale=(0.04,0.04,0.04), rotate=(0,0.2,0))
+    bmp.glLoadObjModel("model.obj", translate=(-1.0,-0.9,0), scale=(0.04,0.04,0.04), rotate=(0,0.2,0))
     
     #Output BMP
-    bmp.glWrite("PlanetaJupiterShader.bmp")
+    bmp.glWrite("phong.bmp")

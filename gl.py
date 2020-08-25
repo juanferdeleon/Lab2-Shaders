@@ -643,6 +643,92 @@ class Bitmap(object):
                 int(235 * intensity * ruido) if 235 * intensity > 0 else 0,
                 int(231 * intensity * ruido) if 231 * intensity > 0 else 0])
 
+    def toon(self, **kwargs):
+        u, v, w = kwargs['bar']
+        na, nb, nc = kwargs['varing_normals']
+        ta, tb, tc = kwargs['texture_coord']
+        light = kwargs['light']
+        tex = kwargs['textu']
+        b, g, r = kwargs['color']
+
+        b /= 255
+        g /= 255
+        r /= 255
+
+        if tex:
+            tx = ta.x * u + tb.x * v + tc.x * w
+            ty = ta.y * u + tb.y * v + tc.y * w
+            tcolor = tex.get_color(tx,ty)
+            b *= tcolor[0] / 255
+            g *= tcolor[1] / 255
+            r *= tcolor[2] / 255
+
+        nx = na[0] * u + nb[0] * v + nc[0] * w
+        ny = na[1] * u + nb[1] * v + nc[1] * w
+        nz = na[2] * u + nb[2] * v + nc[2] * w
+        normal = V3(nx,ny,nz)
+        intensity = dot(normal, light)
+
+        if (intensity>0.85):
+            intensity = 1
+        elif (intensity>0.60):
+            intensity = 0.80
+        elif (intensity>0.45):
+            intensity = 0.60
+        elif (intensity>0.30):
+            intensity = 0.45
+        elif (intensity>0.15):
+            intensity = 0.30
+        else:
+            intensity = 0
+
+        b *= intensity
+        g *= intensity
+        r *= intensity
+
+        return r, g, b
+
+    def phong(render, **kwargs):
+        u, v, w = kwargs['bar']
+        ta, tb, tc = kwargs['texture_coord']
+        na, nb, nc = kwargs['varing_normals']
+        b, g, r = kwargs['color']
+
+        b /= 255
+        g /= 255
+        r /= 255
+
+        if render.active_texture:
+            tx = ta.x * u + tb.x * v + tc.x * w
+            ty = ta.y * u + tb.y * v + tc.y * w
+            texColor = render.active_texture.getColor(tx, ty)
+            b *= texColor[0] / 255
+            g *= texColor[1] / 255
+            r *= texColor[2] / 255
+
+        nx = na[0] * u + nb[0] * v + nc[0] * w
+        ny = na[1] * u + nb[1] * v + nc[1] * w
+        nz = na[2] * u + nb[2] * v + nc[2] * w
+
+        normal = V3(nx, ny, nz)
+
+        intensity = np.dot(normal, render.light)
+
+        b *= intensity
+        g *= intensity
+        r *= intensity
+
+        if intensity > 0 and intensity < 0.25:
+            return 1, 0, 0
+        if intensity >= 0.25 and intensity < 0.50:
+            return 1, 0.25, 0
+        if intensity >= 0.50 and intensity < 0.75:
+            return 1, 0.50, 0
+        if intensity >= 0.75 and intensity < 1:
+            return 1, 1, 0
+        else:
+            return 0,0,0
+
     def glTransformMatrix(self, vector):
         '''Transform Vector'''
         vector_nuevo = [[vector.x],[vector.y],[vector.z],[1]]
